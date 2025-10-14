@@ -13,11 +13,14 @@ export default function RootLayout() {
 
 function AuthedStack() {
   const {user} = useAuth();
-
   return (
     <Stack>
-        <Stack.Protected guard={!!user}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Protected guard={!!user && user.$id[0] === "b"}>
+          <Stack.Screen name="(barbers)" options={{ headerShown: false }} />
+        </Stack.Protected>
+        
+        <Stack.Protected guard={!!user && user.$id[0] === "s"}>
+          <Stack.Screen name="(students)" options={{ headerShown: false }} />
         </Stack.Protected>
 
         <Stack.Protected guard={!user}>

@@ -4,7 +4,7 @@ import { account } from "./appwrite";
 
 type AuthContextType = {
     user: Models.User<Models.Preferences> | null;
-    signUp: (email: string, password: string) => Promise<string | null>;
+    signUp: (email: string, password: string, name: string, value: string) => Promise<string | null>;
     signIn: (email: string, password: string) => Promise<string | null>;
     signOut: () => Promise<string | null>;
 }
@@ -27,9 +27,9 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
         }
     }
 
-    const signUp = async (email: string, password: string) => {
+    const signUp = async (email: string, password: string, name: string, value: string) => {
         try {
-            await account.create({userId: ID.unique(), email: email, password: password})
+            await account.create({userId: value + ID.unique(), email: email, password: password, name: name})
             await signIn(email, password)
             await getUser();
             return null;
