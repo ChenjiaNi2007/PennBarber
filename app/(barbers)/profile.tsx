@@ -36,7 +36,7 @@ export default function LoginScreen(){
             }
         }
         fetchProfile()
-    },[]);
+    },[isEdit]);
 
     if (loading) return <Text>Loading...</Text>;
     if (!profile) return <Text>No profile found.</Text>;
