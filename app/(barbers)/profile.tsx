@@ -11,6 +11,7 @@ import { Button } from "react-native-paper";
 export default function LoginScreen(){
     const {user} = useAuth();
 
+    const [isEdit, setIsEdit] = useState<Boolean>(false)
     const [profile, setProfile] = useState<any>()
     const [loading, setLoading] = useState<Boolean>(true)
     
@@ -42,9 +43,9 @@ export default function LoginScreen(){
 
     return (
         <View>
-            <Text>Hello this is the Login Page</Text>
-            <Profile profile={profile}></Profile>
-            <Button>Edit</Button>
+            <Text>Profile</Text>
+            <Profile profile={profile} isEdit={isEdit}></Profile>
+            <Button onPress={() => {setIsEdit((prev) => !prev)}}>{isEdit ? "Finished Editing" : "Edit"}</Button>
         </View>
     );
 }
