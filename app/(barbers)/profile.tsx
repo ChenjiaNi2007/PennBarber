@@ -3,7 +3,6 @@ import { Link } from "expo-router";
 import Profile from "@/lib/profile";
 import { useAuth } from "@/lib/auth-context";
 import { BARBER_COLLECTION_ID, CALENDAR_COLLECTION_ID, DATABASE_ID, tablesDB } from "@/lib/appwrite";
-import { ID } from "react-native-appwrite";
 import { useEffect, useState } from "react";
 import { Button } from "react-native-paper";
 
@@ -24,27 +23,26 @@ export default function LoginScreen(){
         return result;
     }
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const data = await getProfile();
-                setProfile(data)
-            } catch (error) {
-                console.log("An error has occurred")
-            } finally {
-                setLoading(false)
-            }
+    const fetchProfile = async () => {
+        try {
+            const data = await getProfile();
+            setProfile(data)
+        } catch (error) {
+            console.log("An error has occurred")
+        } finally {
+            setLoading(false)
         }
-        fetchProfile()
-    },[isEdit]);
+    }
 
-    if (loading) return <Text>Loading...</Text>;
-    if (!profile) return <Text>No profile found.</Text>;
+    useEffect(() => {
+        fetchProfile()
+        console.log("Started")
+    },[]);
 
     return (
         <View>
             <Text>Profile</Text>
-            <Profile profile={profile} isEdit={isEdit}></Profile>
+            {loading ? (<Text>Loading...</Text>) : (<Profile profile={profile} isEdit={isEdit} fetchProfile={fetchProfile} setLoading={setLoading} isLoading={loading}></Profile>)}
             <Button onPress={() => {setIsEdit((prev) => !prev)}}>{isEdit ? "Finished Editing" : "Edit"}</Button>
         </View>
     );
