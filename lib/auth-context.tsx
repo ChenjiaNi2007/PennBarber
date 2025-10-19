@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ID, Models } from "react-native-appwrite";
-import { account } from "./appwrite";
+import { account, BARBER_COLLECTION_ID, DATABASE_ID, tablesDB } from "./appwrite";
 
 type AuthContextType = {
     user: Models.User<Models.Preferences> | null;
@@ -29,7 +29,18 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
 
     const signUp = async (email: string, password: string, name: string, value: string) => {
         try {
-            await account.create({userId: value + ID.unique(), email: email, password: password, name: name})
+            const id = value + ID.unique();
+            await account.create({userId: id, email: email, password: password, name: name})
+            await tablesDB.createRow({
+                databaseId: DATABASE_ID!,
+                tableId: BARBER_COLLECTION_ID!,
+                rowId: id,
+                data: {
+                    barberName: "",
+                    profileText: "",
+                    price: ""
+                }
+            })
             await signIn(email, password)
             await getUser();
             return null;
