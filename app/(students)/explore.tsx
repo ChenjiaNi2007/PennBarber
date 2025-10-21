@@ -1,6 +1,6 @@
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { Link } from "expo-router";
-import { BARBER_COLLECTION_ID, DATABASE_ID, tablesDB } from "@/lib/appwrite";
+import { BARBER_COLLECTION_ID, client, DATABASE_ID, tablesDB } from "@/lib/appwrite";
 import { useEffect, useState } from "react";
 import Profile from "@/lib/profile";
 
@@ -8,6 +8,9 @@ export default function LoginScreen(){
 
     const [profiles, setProfiles] = useState<any>();
     const [loading, setLoading] = useState<Boolean>(true)
+    
+    const barberChannel = `databases.${DATABASE_ID}.collections.${BARBER_COLLECTION_ID}.documents`
+    client.subscribe(barberChannel, () => {getProfiles()})
     
     const getProfiles = async () => {
         try {
@@ -30,11 +33,18 @@ export default function LoginScreen(){
     }
 
     return (
-        <View>
-            <Text>Hello this is the Explore Page</Text>
-            {profiles.map((profile: any) => {
-                return <Profile profile={profile}></Profile>
-            })}
-        </View>
+        <ScrollView>
+            <>    
+                {profiles.map((profile: any) => {
+                    return <Profile profile={profile}></Profile>
+                })}
+            </>
+        </ScrollView>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        
+    }
+});

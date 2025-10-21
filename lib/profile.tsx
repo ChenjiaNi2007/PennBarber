@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Text } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
 import { BARBER_COLLECTION_ID, DATABASE_ID, tablesDB } from "./appwrite";
 import { useAuth } from "./auth-context";
@@ -47,31 +47,83 @@ export default function Profile(props: any) {
 
     return (
         props.isEdit ? <>
-            <TextInput
-                label="Barber Name"
-                value={barberName}
-                multiline={true}
-                mode="outlined"
-                onChangeText={setBarberName}
-            />
-            <TextInput
-                label="Profile"
-                value={profileText}
-                multiline={true}
-                mode="outlined"
-                onChangeText={setProfileText}
-            />
-            <TextInput
-                label="Price"
-                value={price}
-                multiline={true}
-                mode="outlined"
-                onChangeText={setPrice}
-            />
-        </> : <>
-            <Text>This is my name: {profile.barberName}</Text>
-            <Text>{profile.profileText}</Text>
-            <Text>Price per cut: {profile.price}</Text>
-        </>
+            <View style={styles.container}>
+                <TextInput
+                    label="Barber Name"
+                    value={barberName}
+                    multiline
+                    mode="outlined"
+                    style={styles.input}
+                    onChangeText={setBarberName}
+                />
+                <TextInput
+                    label="Profile"
+                    value={profileText}
+                    multiline
+                    mode="outlined"
+                    style={styles.input}
+                    onChangeText={setProfileText}
+                />
+                <TextInput
+                    label="Price"
+                    value={price}
+                    multiline
+                    mode="outlined"
+                    style={styles.input}
+                    onChangeText={setPrice}
+                />
+            </View>
+        </> : <View style={styles.container2}>
+            <Text style={styles.nameText}>This is my name: {profile.barberName}</Text>
+            <Text style={styles.profileText}>{profile.profileText}</Text>
+            <Text style={styles.priceText}>Price per cut: {profile.price}</Text>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: "#f8f9fa",
+    },
+    input: {
+        marginBottom: 16,
+        backgroundColor: "white",
+    },
+    label: {
+        fontSize: 16,
+        color: "#333",
+        marginBottom: 4,
+        fontWeight: "500",
+    },
+    container2: {
+        margin: 16,
+        padding: 20,
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 4,
+    },
+    nameText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#222",
+        marginBottom: 6,
+    },
+    profileText: {
+        fontSize: 16,
+        color: "#555",
+        marginBottom: 8,
+        lineHeight: 22,
+    },
+    priceText: {
+        fontSize: 16,
+        color: "#1e88e5",
+        fontWeight: "600",
+        marginTop: 6,
+    }
+});
